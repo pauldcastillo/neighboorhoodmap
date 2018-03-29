@@ -12,9 +12,9 @@ var model = {
                     ratings: venue.venue.rating,
                 };
             });
-            return restaurants;
+            viewModel.setMarkers(restaurants)
         });
-        return restaurants
+        return restaurants;
     },
     getRestaurants: function() {
         var $foursquare = $.ajax({
@@ -42,9 +42,18 @@ var model = {
 }
 
 var viewModel = {
+    initApp: function() {
+        viewMap.google()
+        model.initModel()
+    },
+
     getRestaurants: function() {
         var restaurants = model.restaurants;
         return restaurants
+    },
+
+    setMarkers: function(restaurants) {
+        viewMap.setMarkers(restaurants)
     },
 }
 
@@ -67,25 +76,25 @@ var viewMap = {
 
         var default_lat_long = {lat: 37.565315, lng: -122.322315};
 
-        map = new google.maps.Map(document.getElementById('map'), {
+        viewMap.map = new google.maps.Map(document.getElementById('map'), {
             center: default_lat_long,
             zoom: 16,
             mapTypeControl: false
         });
+    },
 
-        var rests =  viewModel.getRestaurants()
-        Object.keys(rests).forEach(function(key) {
-            var rest = rests[key];
+    setMarkers: function(restaurants) {
+        console.log(restaurants)
+        Object.keys(restaurants).forEach(function(key) {
+            var rest = restaurants[key];
             var marker = new google.maps.Marker({
-                map: map,
+                map: viewMap.map,
                 position: {lat: rest.lat, lng: rest.lng},
                 title: key,
                 animation: google.maps.Animation.DROP,
             });
         });
     },
-
 }
 
-model.initModel()
-viewMap.google()
+viewModel.initApp()
