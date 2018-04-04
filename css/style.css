@@ -7,15 +7,24 @@
 
 html {
     height: 100%;
+    margin: auto;
 }
 
 body {
     max-width: 1080px;
     margin: 0;
     height: 100%;
-    padding: 0px;
+    padding: 0;
+}
+
+h1 {
+    font-weight: bolder;
 }
 
 #map {
     height: 80%;
+}
+
+.center {
+    text-align: center;
 }
