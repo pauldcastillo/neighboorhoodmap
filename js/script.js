@@ -82,6 +82,31 @@ var viewMap = {
             zoom: 16,
             mapTypeControl: false,
         });
+
+        viewMap.map.setOptions(
+            {
+                styles: [
+                    {
+                        "featureType": "poi",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.text",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "transit",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "labels.text",
+                        "stylers": [{"visibility": "off"}]
+                    }
+                ],
+            },
+        );
     },
 
     setMarkers: function(restaurants) {
