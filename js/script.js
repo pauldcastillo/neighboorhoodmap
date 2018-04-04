@@ -5,6 +5,7 @@ var model = {
         var restaurants = [];
 
         getRestaurants.done( function(response) {
+            console.log(response)
             response.response.groups[0].items.forEach(function(venue) {
                 restaurants[venue.venue.name] = {
                     lat: venue.venue.location.lat,
@@ -79,12 +80,13 @@ var viewMap = {
         viewMap.map = new google.maps.Map(document.getElementById('map'), {
             center: default_lat_long,
             zoom: 16,
-            mapTypeControl: false
+            mapTypeControl: false,
         });
     },
 
     setMarkers: function(restaurants) {
         console.log(restaurants)
+        var largeInfowindow = new google.maps.InfoWindow();
         Object.keys(restaurants).forEach(function(key) {
             var rest = restaurants[key];
             var marker = new google.maps.Marker({
@@ -93,8 +95,25 @@ var viewMap = {
                 title: key,
                 animation: google.maps.Animation.DROP,
             });
+
+            marker.addListener('click', function() {
+                viewMap.populateInfoWindow(this, largeInfowindow);
+            });
         });
     },
+
+    populateInfoWindow: function(marker, infowindow) {
+        if (infowindow.marker != marker) {
+            infowindow.setContent('');
+            infowindow.marker = marker;
+            infowindow.addListener('closeclick', function() {
+                infowindow.marker = null;
+            });
+        };
+
+        infowindow.setContent('<h3>' + marker.title + '</h3>')
+        infowindow.open(viewMap.map, marker);
+    }
 }
 
 viewModel.initApp()
