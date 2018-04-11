@@ -28,10 +28,18 @@ var model = {
                 client_secret: "ZNRD3YLNWEMARFJIFXGILOIQZLDVFBNGHCXG1AHA5RH3EFBS",
                 v:"20170801",
                 limit: 10,
-            }
-        }).fail( function (e) {
-            console.log("fail");
-            console.log(e);
+            },
+            timeout: 3000,
+            fail: function (error) {
+                console.log("Error getting restaurants");
+                console.log(error.responseJSON);
+                window.alert('An error occurred getting the restaurants. Please refresh the page and try again.');
+            },
+            error: function (error) {
+                console.log("Error getting restaurants");
+                console.log(error.responseJSON);
+                window.alert('An error occurred getting the restaurants. Please refresh the page and try again.');
+            },
         });
 
         return $foursquare
@@ -45,6 +53,9 @@ var model = {
 var viewModel = {
     initApp: function() {
         viewMap.google()
+    },
+
+    initRests: function() {
         model.initModel()
     },
 
@@ -65,14 +76,26 @@ var viewMap = {
             data: {
                 key: 'AIzaSyCTBfBVBLQOsZDioySrUjhU1UuIYLwaavQ',
                 v:'3',
-                callback: "viewMap.initMap"
             },
-            dataType: "jsonp"
+            dataType: "jsonp",
+            timeout: 3000,
+            fail: (function (error) {
+                console.log("Error getting map")
+                console.log(error)
+                window.alert('An error occurred while initializing the map. Please refresh the page and try again.');
+            }),
+            error: (function (error) {
+                console.log("Error getting map")
+                console.log(error)
+                window.alert('An error occurred while initializing the map. Please refresh the page and try again.');
+            }),
+            success: (function () {
+                viewMap.initMap()
+            }),
         });
     },
 
     initMap: function() {
-        console.log("call initMap")
         var map;
 
         var default_lat_long = {lat: 37.565315, lng: -122.322315};
@@ -107,6 +130,8 @@ var viewMap = {
                 ],
             },
         );
+
+        viewModel.initRests()
     },
 
     setMarkers: function(restaurants) {
