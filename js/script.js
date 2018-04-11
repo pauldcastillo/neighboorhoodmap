@@ -27,7 +27,7 @@ var model = {
                 client_id: "54LQWYWO5SVAYVORI3B4FUAFTEYA05SORU0QUUUQ5TFL24HY",
                 client_secret: "ZNRD3YLNWEMARFJIFXGILOIQZLDVFBNGHCXG1AHA5RH3EFBS",
                 v:"20170801",
-                limit: 10,
+                radius: 3000,
             },
             timeout: 3000,
             fail: function (error) {
