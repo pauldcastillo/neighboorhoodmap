@@ -10,7 +10,7 @@ var model = {
                 restaurants[venue.venue.name] = {
                     lat: venue.venue.location.lat,
                     lng: venue.venue.location.lng,
-                    ratings: venue.venue.rating,
+                    rating: venue.venue.rating,
                 };
             });
             viewModel.setMarkers(restaurants)
@@ -23,7 +23,6 @@ var model = {
             data: {
                 near: "San Mateo, CA",
                 section: "food",
-                novelty: "new", 
                 client_id: "54LQWYWO5SVAYVORI3B4FUAFTEYA05SORU0QUUUQ5TFL24HY",
                 client_secret: "ZNRD3YLNWEMARFJIFXGILOIQZLDVFBNGHCXG1AHA5RH3EFBS",
                 v:"20170801",
@@ -144,6 +143,7 @@ var viewMap = {
                 position: {lat: rest.lat, lng: rest.lng},
                 title: key,
                 animation: google.maps.Animation.DROP,
+                rating: rest.rating,
             });
 
             marker.addListener('click', function() {
@@ -161,7 +161,7 @@ var viewMap = {
             });
         };
 
-        infowindow.setContent('<h3>' + marker.title + '</h3>')
+        infowindow.setContent('<h3>' + marker.title + '</h3><p>Rating: ' + marker.rating + '</p>')
         infowindow.open(viewMap.map, marker);
     }
 }
