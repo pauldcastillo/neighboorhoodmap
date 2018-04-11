@@ -161,7 +161,7 @@ var viewMap = {
             });
         };
 
-        infowindow.setContent('<h3>' + marker.title + '</h3><p>Rating: ' + marker.rating + '</p>')
+        infowindow.setContent('<h3>' + marker.title + '</h3><span class="rating">Rating: ' + marker.rating + '</span><br><span>Information collected from FOURSQUARE.</span>')
         infowindow.open(viewMap.map, marker);
     }
 }

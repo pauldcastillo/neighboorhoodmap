@@ -28,3 +28,8 @@ h1 {
 .center {
     text-align: center;
 }
+
+.rating {
+    font-size: 15px;
+    font-weight: 500;
+}
