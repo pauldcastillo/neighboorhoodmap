@@ -13,7 +13,7 @@ var model = {
                     rating: venue.venue.rating,
                 };
             });
-            viewModel.setMarkers(restaurants)
+            viewModel.initElements(restaurants)
         });
         return restaurants;
     },
@@ -46,6 +46,25 @@ var model = {
 
     initModel: function() {
         model.restaurants = model.buildRestaurants()
+    },
+
+    getRatingSpread: function() {
+        var ratingsList = [];
+        Object.keys(model.restaurants).forEach( function(key) {
+            ratingsList.push(model.restaurants[key].rating);
+        });
+        ratingsList.sort();
+
+        var roundToHundredths = function(num) {
+            return Math.round(num * 100) / 100;
+        }
+
+        var iterator = roundToHundredths((ratingsList[ratingsList.length - 1] - ratingsList[0]) / 4);
+        var buttons = [];
+        for (var i = 1; i <= 5; i++) {
+            buttons.push(roundToHundredths(ratingsList[0] + (iterator * (i - 1))));
+        };
+        return buttons.sort();
     }
 }
 
@@ -58,13 +77,18 @@ var viewModel = {
         model.initModel()
     },
 
+    initElements: function(restaurants) {
+        viewMap.setMarkers(restaurants);
+        viewList.setButtons(model.getRatingSpread());
+    },
+
     getRestaurants: function() {
         var restaurants = model.restaurants;
         return restaurants
     },
 
     setMarkers: function(restaurants) {
-        viewMap.setMarkers(restaurants)
+        viewMap.setMarkers(restaurants);
     },
 }
 
@@ -163,6 +187,15 @@ var viewMap = {
 
         infowindow.setContent('<h3>' + marker.title + '</h3><span class="rating">Rating: ' + marker.rating + '</span><br><span>Information collected from FOURSQUARE.</span>')
         infowindow.open(viewMap.map, marker);
+    }
+}
+
+var viewList = {
+    setButtons: function(spread) {
+        for (var i = spread.length - 1; i >= 0; i--) {
+            var elem = document.getElementById('button-' + (i + 1));
+            elem.innerText = spread[i + 1] + " - " + spread[i]
+        }
     }
 }
 

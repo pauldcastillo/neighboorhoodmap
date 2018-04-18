@@ -6,8 +6,10 @@
 }
 
 html {
+    max-width: 1080px;
     height: 100%;
     margin: auto;
+    padding: 0;
 }
 
 body {
@@ -22,14 +24,21 @@ h1 {
 }
 
 #map {
-    height: 80%;
+    height: 70%;
 }
 
-.center {
+.title {
+    font-size: 26px;
     text-align: center;
 }
 
 .rating {
     font-size: 15px;
     font-weight: 500;
+}
+
+.sort_title {
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
