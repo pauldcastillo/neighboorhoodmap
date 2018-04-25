@@ -59,9 +59,9 @@ var model = {
             return Math.round(num * 100) / 100;
         }
 
-        var iterator = roundToHundredths((ratingsList[ratingsList.length - 1] - ratingsList[0]) / 4);
+        var iterator = roundToHundredths((ratingsList[ratingsList.length - 1] - ratingsList[0]) / 5);
         var buttons = [];
-        for (var i = 1; i <= 5; i++) {
+        for (var i = 1; i <= 6; i++) {
             buttons.push(roundToHundredths(ratingsList[0] + (iterator * (i - 1))));
         };
         return buttons.sort();
@@ -69,6 +69,15 @@ var model = {
 }
 
 var viewModel = {
+    getRestaurants: function() {
+        var restaurants = model.restaurants;
+        return restaurants
+    },
+
+    getRatingSpread: function() {
+        return model.getRatingSpread()
+    },
+
     initApp: function() {
         viewMap.google()
     },
@@ -79,12 +88,7 @@ var viewModel = {
 
     initElements: function(restaurants) {
         viewMap.setMarkers(restaurants);
-        viewList.setButtons(model.getRatingSpread());
-    },
-
-    getRestaurants: function() {
-        var restaurants = model.restaurants;
-        return restaurants
+        ko.applyBindings(new viewList());
     },
 
     setMarkers: function(restaurants) {
@@ -190,13 +194,17 @@ var viewMap = {
     }
 }
 
-var viewList = {
-    setButtons: function(spread) {
-        for (var i = spread.length - 1; i >= 0; i--) {
-            var elem = document.getElementById('button-' + (i + 1));
-            elem.innerText = spread[i + 1] + " - " + spread[i]
-        }
-    }
+var viewList = function () {
+    var self = this;
+
+    self.buttonsList = ko.observableArray([]);
+
+    spread = viewModel.getRatingSpread();
+
+    for (var i = 0; i <= spread.length - 2; i++) {
+        buttonText = spread[i] + " - " + spread[i + 1];
+        self.buttonsList.push(buttonText);
+    };
 }
 
 viewModel.initApp()

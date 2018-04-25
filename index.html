@@ -17,14 +17,13 @@
     </header>
     <div class="row" id="map"></div>
     <div class="row">
-        <h2 class="col-xs-offset-1 col-xs-6">Show By Rating</h2>
+        <h2 class="col-xs-offset-1 col-xs-8 col-md-offset-2 sort-by-title">Show By Rating</h2>
     </div>
     <div class="row">
-        <h4 class="col-xs-1" id="button-1"></h4>
-        <h4 class="col-xs-1" id="button-2"></h4>
-        <h4 class="col-xs-1" id="button-3"></h4>
-        <h4 class="col-xs-1" id="button-4"></h4>
-        <h4 class="col-xs-1" id="button-5"></h4>
+        <div class="col-xs-offset-1" />
+        <div data-bind="foreach: buttonsList">
+            <h4 class="col-xs-2 sort-button" data-bind="text: $data"></h4>
+        </div>
     </div>
     <script src="js/libs/jquery.min.js"></script>
     <script src="js/libs/knockout-3.4.2.js"></script>
