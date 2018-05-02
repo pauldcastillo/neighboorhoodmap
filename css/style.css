@@ -56,3 +56,16 @@ h1 {
     padding: 10px;
     margin: 5px;
 }
+
+.menu-plus {
+    font-size: 48px;
+    font-weight: bolder;
+    color: white;
+    text-align: center;
+    background-color: darkgray;
+}
+
+.menu {
+    background-color: lightgray;
+    height: 100%;
+}

@@ -199,12 +199,28 @@ var viewList = function () {
 
     self.buttonsList = ko.observableArray([]);
 
+    self.restList = ko.observableArray([]);
+
+    self.menuClose = ko.observable(true);
+    self.menuOpen = ko.observable(false);
+
     spread = viewModel.getRatingSpread();
 
     for (var i = 0; i <= spread.length - 2; i++) {
         buttonText = spread[i] + " - " + spread[i + 1];
         self.buttonsList.push(buttonText);
     };
+
+    showMenu = function () {
+        console.log("show menu")
+        self.menuClose(false);
+        self.menuOpen(true);
+    };
+
+    closeMenu = function () {
+        self.menuOpen(false);
+        self.menuClose(true)
+    }
 }
 
 viewModel.initApp()
