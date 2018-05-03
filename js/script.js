@@ -1,16 +1,16 @@
 var model = {
     buildRestaurants: function() {
-        console.log("buildRestaurants");
         var getRestaurants = model.getRestaurants();
         var restaurants = [];
 
         getRestaurants.done( function(response) {
-            console.log(response)
             response.response.groups[0].items.forEach(function(venue) {
                 restaurants[venue.venue.name] = {
                     lat: venue.venue.location.lat,
                     lng: venue.venue.location.lng,
                     rating: venue.venue.rating,
+                    food: venue.venue.categories[0].shortName,
+                    icon: venue.venue.categories[0].icon.prefix + venue.venue.categories[0].icon.suffix,
                 };
             });
             viewModel.initElements(restaurants)
@@ -70,8 +70,7 @@ var model = {
 
 var viewModel = {
     getRestaurants: function() {
-        var restaurants = model.restaurants;
-        return restaurants
+        return model.restaurants;
     },
 
     getRatingSpread: function() {
@@ -162,7 +161,6 @@ var viewMap = {
     },
 
     setMarkers: function(restaurants) {
-        console.log(restaurants)
         var largeInfowindow = new google.maps.InfoWindow();
         Object.keys(restaurants).forEach(function(key) {
             var rest = restaurants[key];
@@ -204,15 +202,21 @@ var viewList = function () {
     self.menuClose = ko.observable(true);
     self.menuOpen = ko.observable(false);
 
-    spread = viewModel.getRatingSpread();
+    self.ratingsSpread = ko.observableArray(['All']);
+    self.restaurants = ko.observableArray([]);
 
-    for (var i = 0; i <= spread.length - 2; i++) {
+    var spread = viewModel.getRatingSpread();
+    for (var i = spread.length - 2; i >= 0; i--) {
         buttonText = spread[i] + " - " + spread[i + 1];
-        self.buttonsList.push(buttonText);
+        self.ratingsSpread.push(buttonText);
     };
 
+    var allRestaurants = viewModel.getRestaurants();
+    Object.keys(allRestaurants).forEach(function (key) {
+        self.restaurants.push(key);
+    });
+
     showMenu = function () {
-        console.log("show menu")
         self.menuClose(false);
         self.menuOpen(true);
     };
@@ -220,7 +224,7 @@ var viewList = function () {
     closeMenu = function () {
         self.menuOpen(false);
         self.menuClose(true)
-    }
+    };
 }
 
 viewModel.initApp()

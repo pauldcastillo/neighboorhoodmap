@@ -15,24 +15,26 @@
             <h1 class="title">Restaurants in San Mateo</h1>
         </div>
     </header>
-    <div class="col-md-1 col-xs-2 menu" data-bind="visible: menuClose">
+    <div class="col-md-1 col-xs-3 menu" data-bind="visible: menuClose">
         <div class="row">
-            <span class="col-xs-12 menu-plus" data-bind="click: showMenu">+</span>
+            <span class="col-xs-12 menu-plus menu-toggle" data-bind="click: showMenu">+</span>
         </div>
     </div>
     <div class="col-md-3 col-xs-8 menu" data-bind="visible: menuOpen">
-        <span data-bind="click: closeMenu">Menu is open</span>
-    </div>
-    <div class="row" id="map"></div>
-    <div class="row">
-        <h2 class="col-xs-offset-1 col-xs-8 col-md-offset-2 sort-by-title">Show By Rating</h2>
-    </div>
-    <div class="row">
-        <div class="col-xs-offset-1" />
-        <div data-bind="foreach: buttonsList">
-            <h4 class="col-xs-2 sort-button" data-bind="text: $data"></h4>
+        <div class="row">
+            <span class="col-xs-12 menu-x menu-toggle" data-bind="click: closeMenu">X</span>
+        </div>
+        <div class="row">
+            <span class="col-xs-offset-1 col-xs-10 spread-title">Show By Rating</span>
+        </div>
+        <div class="row">
+            <select class="col-xs-offset-1 col-xs-10 spread-ddl" data-bind="options: ratingsSpread"></select>
+        </div>
+        <div data-bind="foreach: restaurants">
+            <h4 class="list-rest" data-bind="text: $data"></h4>
         </div>
     </div>
+    <div class="row" id="map"></div>
     <script src="js/libs/jquery.min.js"></script>
     <script src="js/libs/knockout-3.4.2.js"></script>
     <script src="js/script.js"></script>

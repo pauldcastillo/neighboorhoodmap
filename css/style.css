@@ -27,7 +27,7 @@ h1 {
 }
 
 #map {
-    height: 70%;
+    height: 90%;
 }
 
 .title {
@@ -44,7 +44,7 @@ h1 {
     color: white;
 }
 
-.sort-button {
+.list-rest {
     text-align: center;
     min-width: 48px;
     min-height: 48px;
@@ -54,18 +54,37 @@ h1 {
     background: gray;
     color: white;
     padding: 10px;
-    margin: 5px;
 }
 
-.menu-plus {
+.menu-toggle {
     font-size: 48px;
     font-weight: bolder;
     color: white;
-    text-align: center;
     background-color: darkgray;
+}
+
+.menu-plus {
+    text-align: center;
+}
+
+.menu-x {
+    text-align: right;
+    margin-bottom: 3%;
 }
 
 .menu {
     background-color: lightgray;
-    height: 100%;
+    height: 90%;
+    overflow-y: scroll;
+}
+
+.spread-ddl {
+    min-height: 48px;
+    font-size: 20px;
+}
+
+.spread-title {
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
 }
