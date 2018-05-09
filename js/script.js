@@ -73,6 +73,11 @@ var viewModel = {
         return model.restaurants;
     },
 
+    getSpecificRest: function(key) {
+        var rests = viewModel.getRestaurants();
+        return rests[key];
+    },
+
     getRatingSpread: function() {
         return model.getRatingSpread()
     },
@@ -199,8 +204,11 @@ var viewList = function () {
 
     self.restList = ko.observableArray([]);
 
-    self.menuClose = ko.observable(true);
-    self.menuOpen = ko.observable(false);
+    self.menuStatus = ko.observable(true);
+    self.infoStatus = ko.observable(false);
+    self.restName = ko.observable("");
+    self.restFood = ko.observable("");
+    self.restRating = ko.observable("");
 
     self.ratingsSpread = ko.observableArray(['All']);
     self.restaurants = ko.observableArray([]);
@@ -216,15 +224,30 @@ var viewList = function () {
         self.restaurants.push(key);
     });
 
-    showMenu = function () {
-        self.menuClose(false);
-        self.menuOpen(true);
+    closeInfo = function() {
+        self.restName("");
+        self.restFood("");
+        self.restRating("");
+        self.infoStatus(false);
+    }
+
+    toggleMenu = function() {
+        self.menuStatus(! self.menuStatus());
+        if (self.infoStatus()) {
+            closeInfo();
+        };
     };
 
-    closeMenu = function () {
-        self.menuOpen(false);
-        self.menuClose(true)
+    showInfo = function (key) {
+        toggleMenu();
+        self.infoStatus(true);
+        var currentRest = viewModel.getSpecificRest(key);
+        self.restName(key);
+        self.restFood(currentRest.food);
+        self.restRating(currentRest.rating);
+        console.log(currentRest)
     };
+
 }
 
 viewModel.initApp()

@@ -28,11 +28,80 @@ h1 {
 
 #map {
     height: 90%;
+    padding-bottom: -80%;
 }
 
-.title {
-    font-size: 26px;
+.button {
+    min-width: 48px;
+    min-height: 48px;
+    border-style: outset;
+    border-width: medium;
+    border-color: black;
+}
+
+.item-container {
+    background-color: gray;
+    position: absolute;
+    margin-top: -350px;
+    height: 40%;
+    width: 80%;
+    max-width: 600px;
+}
+
+.item-info {
+    color: black;
+    font-size: 20px;
+}
+
+.item-info-label {
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.item-x {
+    color: black;
+    margin-top: 3%;
+    font-size: 25px;
+    font-weight: bold;
+    padding-right: 7%; 
+    text-align: right;
+}
+
+.list-rest {
     text-align: center;
+    font-weight: bold;
+    background: gray;
+    color: white;
+    padding: 10px;
+}
+
+.menu {
+    background-color: lightgray;
+    height: 90%;
+    overflow-y: scroll;
+}
+
+.menu-plus {
+    text-align: center;
+}
+
+.menu-toggle {
+    font-size: 48px;
+    font-weight: bolder;
+    color: white;
+    background-color: darkgray;
+}
+
+.menu-x {
+    text-align: right;
+    margin-bottom: 3%;
+}
+
+.rest-name {
+    color: white;
+    text-shadow: -3px 2px black;
+    font-weight: bold;
 }
 
 .rating {
@@ -44,40 +113,6 @@ h1 {
     color: white;
 }
 
-.list-rest {
-    text-align: center;
-    min-width: 48px;
-    min-height: 48px;
-    font-weight: bold;
-    border-style: outset;
-    border-width: medium;
-    background: gray;
-    color: white;
-    padding: 10px;
-}
-
-.menu-toggle {
-    font-size: 48px;
-    font-weight: bolder;
-    color: white;
-    background-color: darkgray;
-}
-
-.menu-plus {
-    text-align: center;
-}
-
-.menu-x {
-    text-align: right;
-    margin-bottom: 3%;
-}
-
-.menu {
-    background-color: lightgray;
-    height: 90%;
-    overflow-y: scroll;
-}
-
 .spread-ddl {
     min-height: 48px;
     font-size: 20px;
@@ -87,4 +122,9 @@ h1 {
     font-size: 18px;
     color: black;
     font-weight: bold;
+}
+
+.title {
+    font-size: 26px;
+    text-align: center;
 }
