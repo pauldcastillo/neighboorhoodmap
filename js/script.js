@@ -5,12 +5,12 @@ var model = {
 
         getRestaurants.done( function(response) {
             response.response.groups[0].items.forEach(function(venue) {
-                restaurants[venue.venue.name] = {
-                    lat: venue.venue.location.lat,
-                    lng: venue.venue.location.lng,
-                    rating: venue.venue.rating,
-                    food: venue.venue.categories[0].shortName,
-                    icon: venue.venue.categories[0].icon.prefix + venue.venue.categories[0].icon.suffix,
+                place = venue.venue;
+                restaurants[place.name] = {
+                    lat: place.location.lat,
+                    lng: place.location.lng,
+                    rating: place.rating,
+                    food: place.categories[0].shortName,
                 };
             });
             viewModel.initElements(restaurants)
@@ -92,7 +92,7 @@ var viewModel = {
 
     initElements: function(restaurants) {
         viewMap.setMarkers(restaurants);
-        ko.applyBindings(new viewList());
+        ko.applyBindings(new viewList.initViewList());
     },
 
     setMarkers: function(restaurants) {
@@ -166,7 +166,8 @@ var viewMap = {
     },
 
     setMarkers: function(restaurants) {
-        var largeInfowindow = new google.maps.InfoWindow();
+        viewMap.infowindow = new google.maps.InfoWindow();
+        viewMap.markers = [];
         Object.keys(restaurants).forEach(function(key) {
             var rest = restaurants[key];
             var marker = new google.maps.Marker({
@@ -178,12 +179,18 @@ var viewMap = {
             });
 
             marker.addListener('click', function() {
-                viewMap.populateInfoWindow(this, largeInfowindow);
+                viewMap.populateInfoWindow(key);
+                viewList.showInfo(key);
+
             });
+
+            viewMap.markers[key] = marker;
         });
     },
 
-    populateInfoWindow: function(marker, infowindow) {
+    populateInfoWindow: function(key) {
+        var infowindow = viewMap.infowindow;
+        var marker = viewMap.markers[key];
         if (infowindow.marker != marker) {
             infowindow.setContent('');
             infowindow.marker = marker;
@@ -197,57 +204,74 @@ var viewMap = {
     }
 }
 
-var viewList = function () {
-    var self = this;
+var viewList = {
+    initViewList: function() {
+        self = this;
 
-    self.buttonsList = ko.observableArray([]);
+        self.buttonsList = ko.observableArray([]);
 
-    self.restList = ko.observableArray([]);
+        self.restList = ko.observableArray([]);
 
-    self.menuStatus = ko.observable(true);
-    self.infoStatus = ko.observable(false);
-    self.restName = ko.observable("");
-    self.restFood = ko.observable("");
-    self.restRating = ko.observable("");
+        self.menuStatus = ko.observable(true);
+        self.infoStatus = ko.observable(false);
+        self.restName = ko.observable("");
+        self.restFood = ko.observable("");
+        self.restRating = ko.observable("");
+        self.restAddress = ko.observable("");
+        self.restPhone = ko.observable("");
 
-    self.ratingsSpread = ko.observableArray(['All']);
-    self.restaurants = ko.observableArray([]);
+        self.ratingsSpread = ko.observableArray(['All']);
+        self.restaurants = ko.observableArray([]);
 
-    var spread = viewModel.getRatingSpread();
-    for (var i = spread.length - 2; i >= 0; i--) {
-        buttonText = spread[i] + " - " + spread[i + 1];
-        self.ratingsSpread.push(buttonText);
-    };
+        var spread = viewModel.getRatingSpread();
+        for (var i = spread.length - 2; i >= 0; i--) {
+            buttonText = spread[i] + " - " + spread[i + 1];
+            self.ratingsSpread.push(buttonText);
+        };
 
-    var allRestaurants = viewModel.getRestaurants();
-    Object.keys(allRestaurants).forEach(function (key) {
-        self.restaurants.push(key);
-    });
+        var allRestaurants = viewModel.getRestaurants();
+        Object.keys(allRestaurants).forEach(function (key) {
+            self.restaurants.push(key);
+        });
 
-    closeInfo = function() {
+        closeInfo = function() {
+            viewList.closeInfo();
+        };
+
+        toggleMenu = function() {
+            viewList.toggleMenu();
+        };
+
+        showInfo = function(key) {
+            viewList.showInfo(key);
+        };
+    },
+
+    closeInfo: function() {
         self.restName("");
         self.restFood("");
         self.restRating("");
         self.infoStatus(false);
-    }
+    },
 
-    toggleMenu = function() {
+    toggleMenu: function() {
         self.menuStatus(! self.menuStatus());
         if (self.infoStatus()) {
             closeInfo();
         };
-    };
+    },
 
-    showInfo = function (key) {
+    showInfo: function (key) {
         toggleMenu();
         self.infoStatus(true);
         var currentRest = viewModel.getSpecificRest(key);
         self.restName(key);
         self.restFood(currentRest.food);
         self.restRating(currentRest.rating);
-        console.log(currentRest)
-    };
-
+        self.restPhone(currentRest.phone);
+        self.restAddress(currentRest.address);
+        viewMap.populateInfoWindow(key);
+    },
 }
 
 viewModel.initApp()
