@@ -22,11 +22,8 @@ var model = {
         const restFilter = filter;
         const rests = model.restaurants;
         let filteredRests = [];
-        console.log("Filter High: " + restFilter.higherValue + " / Filter Low: " + restFilter.lowerValue)
         Object.keys(model.restaurants).forEach(function (key) {
-            console.log("For " + key + ": Rating: " + rests[key].rating)
             if (rests[key].rating <= restFilter.higherValue && rests[key].rating >= restFilter.lowerValue) {
-                console.log("Add " + key)
                 filteredRests.push(key);
             };
         });
@@ -253,7 +250,7 @@ var viewList = {
             this.higherValue = higherValue;
         };
 
-        self.ratingsSpread.push(new Rating("All", 10, 0))
+        self.ratingsSpread.push(new Rating("All", 0, 10))
 
         var spread = viewModel.getRatingSpread();
         for (var i = spread.length - 2; i >= 0; i--) {
