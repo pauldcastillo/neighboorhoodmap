@@ -24,7 +24,7 @@ var model = {
         let filteredRests = [];
         Object.keys(model.restaurants).forEach(function (key) {
             if (rests[key].rating <= restFilter.higherValue && rests[key].rating >= restFilter.lowerValue) {
-                filteredRests.push(key);
+                filteredRests[key] = rests[key];
             };
         });
 
@@ -82,17 +82,20 @@ var model = {
     }
 }
 
-var viewModel = {
+var view = {
+    filterRests: function(filter) {
+         let filteredRests = model.filterRests(filter);
+         viewMap.deleteAllMarkers();
+         viewMap.setMarkers(filteredRests);
+         return filteredRests;
+    },
+
     getRatingSpread: function() {
         return model.getRatingSpread();
     },
 
     getRestaurants: function() {
         return model.restaurants;
-    },
-
-    getRestsByFilter: function(filter) {
-        return model.filterRests(filter);
     },
 
     getSpecificRest: function(key) {
@@ -119,6 +122,14 @@ var viewModel = {
 }
 
 var viewMap = {
+    deleteAllMarkers: function() {
+        Object.keys(viewMap.markers).forEach(function(key) {
+            viewMap.markers[key].setMap(null);
+        });
+
+        viewMap.markers = [];
+    },
+
     google: function() {
         $.ajax({
             url: 'https://maps.googleapis.com/maps/api/js',
@@ -268,8 +279,14 @@ var viewList = {
         };
 
         filterRests = function() {
-            const filteredRests = viewModel.getRestsByFilter(self.ratingFilter());
-            self.restaurants(filteredRests);
+            const filteredRests = viewModel.filterRests(self.ratingFilter());
+            let filteredRestsKeys = [];
+
+            Object.keys(filteredRests).forEach(function (key) {
+                filteredRestsKeys.push(key);
+            });
+
+            self.restaurants(filteredRestsKeys);
         }
 
         showInfo = function(key) {
