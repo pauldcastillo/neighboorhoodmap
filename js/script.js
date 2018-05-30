@@ -17,6 +17,23 @@ var model = {
         });
         return restaurants;
     },
+
+    filterRests: function (filter) {
+        const restFilter = filter;
+        const rests = model.restaurants;
+        let filteredRests = [];
+        console.log("Filter High: " + restFilter.higherValue + " / Filter Low: " + restFilter.lowerValue)
+        Object.keys(model.restaurants).forEach(function (key) {
+            console.log("For " + key + ": Rating: " + rests[key].rating)
+            if (rests[key].rating <= restFilter.higherValue && rests[key].rating >= restFilter.lowerValue) {
+                console.log("Add " + key)
+                filteredRests.push(key);
+            };
+        });
+
+        return filteredRests;
+    },
+
     getRestaurants: function() {
         var $foursquare = $.ajax({
             url: 'https://api.foursquare.com/v2/venues/explore',
@@ -69,8 +86,16 @@ var model = {
 }
 
 var viewModel = {
+    getRatingSpread: function() {
+        return model.getRatingSpread();
+    },
+
     getRestaurants: function() {
         return model.restaurants;
+    },
+
+    getRestsByFilter: function(filter) {
+        return model.filterRests(filter);
     },
 
     getSpecificRest: function(key) {
@@ -78,16 +103,12 @@ var viewModel = {
         return rests[key];
     },
 
-    getRatingSpread: function() {
-        return model.getRatingSpread()
-    },
-
     initApp: function() {
-        viewMap.google()
+        viewMap.google();
     },
 
     initRests: function() {
-        model.initModel()
+        model.initModel();
     },
 
     initElements: function(restaurants) {
@@ -111,17 +132,17 @@ var viewMap = {
             dataType: "jsonp",
             timeout: 3000,
             fail: (function (error) {
-                console.log("Error getting map")
-                console.log(error)
+                console.log("Error getting map");
+                console.log(error);
                 window.alert('An error occurred while initializing the map. Please refresh the page and try again.');
             }),
             error: (function (error) {
-                console.log("Error getting map")
-                console.log(error)
+                console.log("Error getting map");
+                console.log(error);
                 window.alert('An error occurred while initializing the map. Please refresh the page and try again.');
             }),
             success: (function () {
-                viewMap.initMap()
+                viewMap.initMap();
             }),
         });
     },
@@ -214,19 +235,30 @@ var viewList = {
 
         self.menuStatus = ko.observable(true);
         self.infoStatus = ko.observable(false);
+
         self.restName = ko.observable("");
         self.restFood = ko.observable("");
         self.restRating = ko.observable("");
         self.restAddress = ko.observable("");
         self.restPhone = ko.observable("");
 
-        self.ratingsSpread = ko.observableArray(['All']);
+        self.ratingsSpread = ko.observableArray();
         self.restaurants = ko.observableArray([]);
+
+        self.ratingFilter = ko.observable();
+
+        const Rating = function(text, lowerValue, higherValue) {
+            this.buttonText = text;
+            this.lowerValue = lowerValue;
+            this.higherValue = higherValue;
+        };
+
+        self.ratingsSpread.push(new Rating("All", 10, 0))
 
         var spread = viewModel.getRatingSpread();
         for (var i = spread.length - 2; i >= 0; i--) {
             buttonText = spread[i] + " - " + spread[i + 1];
-            self.ratingsSpread.push(buttonText);
+            self.ratingsSpread.push(new Rating(buttonText, spread[i], spread[i + 1]));
         };
 
         var allRestaurants = viewModel.getRestaurants();
@@ -238,12 +270,17 @@ var viewList = {
             viewList.closeInfo();
         };
 
-        toggleMenu = function() {
-            viewList.toggleMenu();
-        };
+        filterRests = function() {
+            const filteredRests = viewModel.getRestsByFilter(self.ratingFilter());
+            self.restaurants(filteredRests);
+        }
 
         showInfo = function(key) {
             viewList.showInfo(key);
+        };
+
+        toggleMenu = function() {
+            viewList.toggleMenu();
         };
     },
 
@@ -252,6 +289,10 @@ var viewList = {
         self.restFood("");
         self.restRating("");
         self.infoStatus(false);
+    },
+
+    filterRests: function(filter) {
+        console.log(filter)
     },
 
     toggleMenu: function() {
