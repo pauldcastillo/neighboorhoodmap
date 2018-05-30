@@ -210,7 +210,6 @@ var viewMap = {
             marker.addListener('click', function() {
                 viewMap.populateInfoWindow(key);
                 viewList.showInfo(key);
-                marker.setAnimation(google.maps.Animation.BOUNCE);
             });
 
             viewMap.markers[key] = marker;
@@ -221,6 +220,9 @@ var viewMap = {
         var infowindow = viewMap.infowindow;
         var marker = viewMap.markers[key];
         if (infowindow.marker != marker) {
+            if (infowindow.marker) {
+                infowindow.marker.setAnimation(null)
+            };
             infowindow.setContent('');
             infowindow.marker = marker;
             infowindow.addListener('closeclick', function() {
@@ -229,6 +231,7 @@ var viewMap = {
             });
         };
 
+        marker.setAnimation(google.maps.Animation.BOUNCE);
         infowindow.setContent('<h3>' + marker.title + '</h3><span class="rating">Rating: ' + marker.rating + '</span><br><span>Information collected from FOURSQUARE.</span>')
         infowindow.open(viewMap.map, marker);
     }
