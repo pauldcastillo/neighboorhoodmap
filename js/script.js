@@ -13,7 +13,7 @@ var model = {
                     food: place.categories[0].shortName,
                 };
             });
-            viewModel.initElements(restaurants)
+            view.initElements(restaurants)
         });
         return restaurants;
     },
@@ -99,7 +99,7 @@ var view = {
     },
 
     getSpecificRest: function(key) {
-        var rests = viewModel.getRestaurants();
+        var rests = view.getRestaurants();
         return rests[key];
     },
 
@@ -191,7 +191,7 @@ var viewMap = {
             },
         );
 
-        viewModel.initRests()
+        view.initRests()
     },
 
     setMarkers: function(restaurants) {
@@ -210,7 +210,7 @@ var viewMap = {
             marker.addListener('click', function() {
                 viewMap.populateInfoWindow(key);
                 viewList.showInfo(key);
-
+                marker.setAnimation(google.maps.Animation.BOUNCE);
             });
 
             viewMap.markers[key] = marker;
@@ -225,6 +225,7 @@ var viewMap = {
             infowindow.marker = marker;
             infowindow.addListener('closeclick', function() {
                 infowindow.marker = null;
+                viewMap.markers[key].setAnimation(null);
             });
         };
 
@@ -263,13 +264,13 @@ var viewList = {
 
         self.ratingsSpread.push(new Rating("All", 0, 10))
 
-        var spread = viewModel.getRatingSpread();
+        var spread = view.getRatingSpread();
         for (var i = spread.length - 2; i >= 0; i--) {
             buttonText = spread[i] + " - " + spread[i + 1];
             self.ratingsSpread.push(new Rating(buttonText, spread[i], spread[i + 1]));
         };
 
-        var allRestaurants = viewModel.getRestaurants();
+        var allRestaurants = view.getRestaurants();
         Object.keys(allRestaurants).forEach(function (key) {
             self.restaurants.push(key);
         });
@@ -279,7 +280,7 @@ var viewList = {
         };
 
         filterRests = function() {
-            const filteredRests = viewModel.filterRests(self.ratingFilter());
+            const filteredRests = view.filterRests(self.ratingFilter());
             let filteredRestsKeys = [];
 
             Object.keys(filteredRests).forEach(function (key) {
@@ -319,7 +320,7 @@ var viewList = {
     showInfo: function (key) {
         toggleMenu();
         self.infoStatus(true);
-        var currentRest = viewModel.getSpecificRest(key);
+        var currentRest = view.getSpecificRest(key);
         self.restName(key);
         self.restFood(currentRest.food);
         self.restRating(currentRest.rating);
@@ -329,4 +330,4 @@ var viewList = {
     },
 }
 
-viewModel.initApp()
+view.initApp()
