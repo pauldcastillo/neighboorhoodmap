@@ -7,7 +7,6 @@ var model = {
         let restaurants = [];
 
         getRestaurants.done( function(response) {
-            console.log(response)
             response.response.groups[0].items.forEach(function(venue) {
                 place = venue.venue;
                 restaurants[place.name] = {
@@ -247,7 +246,6 @@ var viewList = {
         self.restName = ko.observable("");
         self.restFood = ko.observable("");
         self.restAddress = ko.observable("");
-        // self.restPhone = ko.observable("");
 
         self.restaurants = ko.observableArray([]);
 
