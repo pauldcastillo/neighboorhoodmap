@@ -28,27 +28,29 @@
             <span class="col-xs-offset-1 col-xs-10 spread-title">Show By Rating</span>
         </div>
         <div class="row">
-            <select class="col-xs-offset-1 col-xs-9 spread-ddl" data-bind="options: ratingsSpread, optionsText: 'buttonText', optionsValue: function(item) { return item }, value: ratingFilter, event: { change: filterRests }"></select>
+            <select class="col-xs-offset-1 col-xs-9 spread-ddl" data-bind="options: buttonsList, value: typeFilter, event: { change: filterRests }"></select>
         </div>
         <div data-bind="foreach: restaurants">
             <h4 class="list-rest button" data-bind="text: $data, click: showInfo"></h4>
         </div>
     </div>
     <div class="row" id="map"></div>
-    <div class="row item-container" data-bind="visible: infoStatus">
-        <div class="row">
-            <h2 class="col-xs-offset-1 col-xs-8 rest-name" data-bind="text: restName"></h2>
-            <p class="col-md-offset-1 col-xs-1 button item-x" data-bind="click: closeInfo">X</p>
-        </div>
-        <div class="row">
-            <p class="col-xs-offset-1 col-xs-5 item-info-label">Food Type:</p>
-            <p class="col-xs-6 item-info" data-bind="text: restFood"></p>
-        </div>
-        <div class="row">
-            <p class="col-xs-offset-1 col-xs-5 item-info-label">Rating:</p>
-            <p class="col-xs-6 item-info" data-bind="text: restRating"></p>
-        </div class="row">
-            <p class="col-xs-offset-1 col-xs-11">Information collected from FOURSQUARE</p>
+    <div class="row" data-bind="visible: infoStatus">
+        <div class="col-xs-12 col-md-8 item-container">
+            <div class="row">
+                <h2 class="col-xs-offset-1 col-xs-8 rest-name" data-bind="text: restName"></h2>
+                <p class="col-md-offset-1 col-xs-1 button item-x" data-bind="click: closeInfo">X</p>
+            </div>
+            <div class="row">
+                <p class="col-xs-offset-1 col-xs-5 col-md-3 item-info-label">Food Type:</p>
+                <p class="col-xs-6 col-md-8 item-info" data-bind="text: restFood"></p>
+            </div>
+            <div class="row">
+                <p class="col-xs-offset-1 col-xs-5 col-md-3 item-info-label">Address:</p>
+                <p class="col-xs-6 col-md-8 item-info" data-bind="text: restAddress"></p>
+            </div>
+                <p class="col-xs-offset-1 col-xs-11">Information collected from FOURSQUARE</p>
+            </div>
         </div>
     </div>
     <script src="js/libs/jquery.min.js"></script>

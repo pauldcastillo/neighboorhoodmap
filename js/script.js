@@ -1,16 +1,21 @@
 var model = {
     buildRestaurants: function() {
-        var getRestaurants = model.getRestaurants();
-        var restaurants = [];
+        // Set foursquare calls
+        const getRestaurants = model.getRestaurants();
+
+        // Set empty restaurants array
+        let restaurants = [];
 
         getRestaurants.done( function(response) {
+            console.log(response)
             response.response.groups[0].items.forEach(function(venue) {
                 place = venue.venue;
                 restaurants[place.name] = {
+                    name: place.name,
                     lat: place.location.lat,
                     lng: place.location.lng,
-                    rating: place.rating,
                     food: place.categories[0].shortName,
+                    address: place.location.address + " " + place.location.formattedAddress[1],
                 };
             });
             view.initElements(restaurants)
@@ -19,20 +24,26 @@ var model = {
     },
 
     filterRests: function (filter) {
-        const restFilter = filter;
-        const rests = model.restaurants;
-        let filteredRests = [];
-        Object.keys(model.restaurants).forEach(function (key) {
-            if (rests[key].rating <= restFilter.higherValue && rests[key].rating >= restFilter.lowerValue) {
-                filteredRests[key] = rests[key];
-            };
-        });
+        // If the filter is All return all restaurants.
+        if (filter === "All") {
+            return model.restaurants;
+        } else {
+            // Check which restaurants match the filter and return those.
+            const restFilter = filter;
+            const rests = model.restaurants;
+            let filteredRests = [];
+            Object.keys(model.restaurants).forEach(function (key) {
+                if (rests[key].food === restFilter) {
+                    filteredRests[key] = rests[key];
+                };
+            });
+            return filteredRests;
+        };
 
-        return filteredRests;
     },
 
     getRestaurants: function() {
-        var $foursquare = $.ajax({
+        const $foursquareRests = $.ajax({
             url: 'https://api.foursquare.com/v2/venues/explore',
             data: {
                 near: "San Mateo, CA",
@@ -46,39 +57,28 @@ var model = {
             fail: function (error) {
                 console.log("Error getting restaurants");
                 console.log(error.responseJSON);
-                window.alert('An error occurred getting the restaurants. Please refresh the page and try again.');
+                window.alert("An error occurred getting the restaurants. Please refresh the page and try again.");
             },
             error: function (error) {
                 console.log("Error getting restaurants");
                 console.log(error.responseJSON);
-                window.alert('An error occurred getting the restaurants. Please refresh the page and try again.');
+                window.alert("An error occurred getting the restaurants. Please refresh the page and try again.");
             },
         });
 
-        return $foursquare
+        return $foursquareRests;
     },
 
     initModel: function() {
         model.restaurants = model.buildRestaurants()
     },
 
-    getRatingSpread: function() {
-        var ratingsList = [];
+    getTypeSpread: function() {
+        var typeList = [];
         Object.keys(model.restaurants).forEach( function(key) {
-            ratingsList.push(model.restaurants[key].rating);
+            typeList.push(model.restaurants[key].food);
         });
-        ratingsList.sort();
-
-        var roundToHundredths = function(num) {
-            return Math.round(num * 100) / 100;
-        }
-
-        var iterator = roundToHundredths((ratingsList[ratingsList.length - 1] - ratingsList[0]) / 5);
-        var buttons = [];
-        for (var i = 1; i <= 6; i++) {
-            buttons.push(roundToHundredths(ratingsList[0] + (iterator * (i - 1))));
-        };
-        return buttons.sort();
+        return typeList.sort();
     }
 }
 
@@ -88,10 +88,6 @@ var view = {
          viewMap.deleteAllMarkers();
          viewMap.setMarkers(filteredRests);
          return filteredRests;
-    },
-
-    getRatingSpread: function() {
-        return model.getRatingSpread();
     },
 
     getRestaurants: function() {
@@ -204,7 +200,7 @@ var viewMap = {
                 position: {lat: rest.lat, lng: rest.lng},
                 title: key,
                 animation: google.maps.Animation.DROP,
-                rating: rest.rating,
+                type: rest.food,
             });
 
             marker.addListener('click', function() {
@@ -232,7 +228,7 @@ var viewMap = {
         };
 
         marker.setAnimation(google.maps.Animation.BOUNCE);
-        infowindow.setContent('<h3>' + marker.title + '</h3><span class="rating">Rating: ' + marker.rating + '</span><br><span>Information collected from FOURSQUARE.</span>')
+        infowindow.setContent('<h3>' + marker.title + '</h3><span class="rating">Food Type: ' + marker.type + '</span><br><span>Information collected from FOURSQUARE.</span>')
         infowindow.open(viewMap.map, marker);
     }
 }
@@ -241,7 +237,7 @@ var viewList = {
     initViewList: function() {
         self = this;
 
-        self.buttonsList = ko.observableArray([]);
+        self.buttonsList = ko.observableArray(["All", ]);
 
         self.restList = ko.observableArray([]);
 
@@ -250,32 +246,20 @@ var viewList = {
 
         self.restName = ko.observable("");
         self.restFood = ko.observable("");
-        self.restRating = ko.observable("");
         self.restAddress = ko.observable("");
-        self.restPhone = ko.observable("");
+        // self.restPhone = ko.observable("");
 
-        self.ratingsSpread = ko.observableArray();
         self.restaurants = ko.observableArray([]);
 
-        self.ratingFilter = ko.observable();
+        self.typeFilter = ko.observable();
 
-        const Rating = function(text, lowerValue, higherValue) {
-            this.buttonText = text;
-            this.lowerValue = lowerValue;
-            this.higherValue = higherValue;
-        };
-
-        self.ratingsSpread.push(new Rating("All", 0, 10))
-
-        var spread = view.getRatingSpread();
-        for (var i = spread.length - 2; i >= 0; i--) {
-            buttonText = spread[i] + " - " + spread[i + 1];
-            self.ratingsSpread.push(new Rating(buttonText, spread[i], spread[i + 1]));
-        };
-
-        var allRestaurants = view.getRestaurants();
+        const allRestaurants = view.getRestaurants();
         Object.keys(allRestaurants).forEach(function (key) {
             self.restaurants.push(key);
+            const restFood = allRestaurants[key].food;
+            if (self.buttonsList().includes(restFood) != true) {
+                self.buttonsList.push(allRestaurants[key].food);
+            };
         });
 
         closeInfo = function() {
@@ -283,7 +267,7 @@ var viewList = {
         };
 
         filterRests = function() {
-            const filteredRests = view.filterRests(self.ratingFilter());
+            const filteredRests = view.filterRests(self.typeFilter());
             let filteredRestsKeys = [];
 
             Object.keys(filteredRests).forEach(function (key) {
@@ -305,12 +289,7 @@ var viewList = {
     closeInfo: function() {
         self.restName("");
         self.restFood("");
-        self.restRating("");
         self.infoStatus(false);
-    },
-
-    filterRests: function(filter) {
-        console.log(filter)
     },
 
     toggleMenu: function() {
@@ -323,12 +302,10 @@ var viewList = {
     showInfo: function (key) {
         toggleMenu();
         self.infoStatus(true);
-        var currentRest = view.getSpecificRest(key);
+        const currentRest = view.getSpecificRest(key);
         self.restName(key);
-        self.restFood(currentRest.food);
-        self.restRating(currentRest.rating);
-        self.restPhone(currentRest.phone);
         self.restAddress(currentRest.address);
+        self.restFood(currentRest.food);
         viewMap.populateInfoWindow(key);
     },
 }
