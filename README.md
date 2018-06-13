@@ -6,28 +6,30 @@ Show restaurants around downtown San Mateo using FourSquare API.
 
 ### QUICK START:
 
-** If running locally: **
-# Download files/ Clone repository.
-# Open index.html
+**If running locally:**
+* Download files/ Clone repository.
+* Open index.html
 
-** If accessing remotely: **
-# Access https://pauldcastillo.github.io/neighboorhoodmap/
+**If accessing remotely:**
+* Access https://pauldcastillo.github.io/neighboorhoodmap/
 
 
 ### FILES INCLUDED:
-> neighborhoodmap
->   |
->   |---- index.html
->   |---- README.md
->   |---- js/
->   |       |---- script.js
->   |       |---- libs/
->   |               |---- jquery.min.js
->   |               |---- knockout-3.4.2.js
->   |---- css/
->           |---- bootstrap-theme.min.css
->           |---- bootstrap.min.css
->           |---- style.css
+```
+neighborhoodmap
+   |
+   |---- index.html
+   |---- README.md
+   |---- js/
+   |       |---- script.js
+   |       |---- libs/
+   |               |---- jquery.min.js
+   |               |---- knockout-3.4.2.js
+   |---- css/
+           |---- bootstrap-theme.min.css
+           |---- bootstrap.min.css
+           |---- style.css
+```
 
 
 ### NOTES:
