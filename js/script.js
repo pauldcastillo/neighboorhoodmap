@@ -21,7 +21,7 @@ var model = {
                     lng: place.location.lng,
                     food: place.categories[0].shortName,
                     address: place.location.address +
-                        " " +
+                        ' ' +
                         place.location.formattedAddress[1],
                 };
             });
@@ -38,7 +38,7 @@ var model = {
         * @returns {array} array of restaurants
         */
         // If the filter is All return all restaurants.
-        if (filter === "All") {
+        if (filter === 'All') {
             return model.restaurants;
         } else {
             // Check which restaurants match the filter and return those.
@@ -63,13 +63,13 @@ var model = {
         const $foursquareRests = $.ajax({
             url: 'https://api.foursquare.com/v2/venues/explore',
             data: {
-                near: "San Mateo, CA",
-                section: "food",
-                client_id: "54LQWYWO5SVAYVORI3B4FUAFTEYA0" +
-                    "5SORU0QUUUQ5TFL24HY",
-                client_secret: "ZNRD3YLNWEMARFJIFXGILOIQZ" +
-                    "LDVFBNGHCXG1AHA5RH3EFBS",
-                v:"20170801",
+                near: 'San Mateo, CA',
+                section: 'food',
+                client_id: '54LQWYWO5SVAYVORI3B4FUAFTEYA0' +
+                    '5SORU0QUUUQ5TFL24HY',
+                client_secret: 'ZNRD3YLNWEMARFJIFXGILOIQZ' +
+                    'LDVFBNGHCXG1AHA5RH3EFBS',
+                v: '20170801',
                 radius: 3000,
             },
             timeout: 3000,
@@ -77,16 +77,16 @@ var model = {
                 console.log("Error getting restaurants");
                 console.log(error.responseJSON);
                 window.alert(
-                    "An error occurred getting the restaurants. Please " +
-                    "refresh the page and try again."
+                    'An error occurred getting the restaurants. Please ' +
+                    'refresh the page and try again.'
                 );
             },
             error: function (error) {
-                console.log("Error getting restaurants");
+                console.log('Error getting restaurants');
                 console.log(error.responseJSON);
                 window.alert(
-                    "An error occurred getting the restaurants. " +
-                    "Please refresh the page and try again."
+                    'An error occurred getting the restaurants. ' +
+                    'Please refresh the page and try again.'
                 );
             },
         });
@@ -205,23 +205,23 @@ var viewMap = {
                 key: 'AIzaSyCTBfBVBLQOsZDioySrUjhU1UuIYLwaavQ',
                 v:'3',
             },
-            dataType: "jsonp",
+            dataType: 'jsonp',
             timeout: 3000,
             // If the call fails, show an error asking to refresh the page
             fail: (function (error) {
-                console.log("Error getting map");
+                console.log('Error getting map');
                 console.log(error);
                 window.alert(
-                    "An error occurred while initializing the map. Please " +
-                    "refresh the page and try again."
+                    'An error occurred while initializing the map. Please ' +
+                    'refresh the page and try again.'
                 );
             }),
             error: (function (error) {
-                console.log("Error getting map");
+                console.log('Error getting map');
                 console.log(error);
                 window.alert(
-                    "An error occurred while initializing the map. Please " +
-                    " refresh the page and try again."
+                    'An error occurred while initializing the map. Please ' +
+                    ' refresh the page and try again.'
                 );
             }),
             // If the call succeeds, start the map view
@@ -251,12 +251,12 @@ var viewMap = {
             {
                 styles: [
                     {
-                        "featureType": "poi",
-                        "stylers": [{"visibility": "off"}]
+                        'featureType': 'poi',
+                        'stylers': [{'visibility': 'off'}]
                     },
                     {
-                        "featureType": "poi",
-                        "elementType": "labels.text",
+                        'featureType': 'poi',
+                        'elementType': 'labels.text',
                         "stylers": [{"visibility": "off"}]
                     },
                     {
