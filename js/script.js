@@ -14,7 +14,7 @@ var model = {
         getRestaurants.done( function(response) {
             // For each venue, make a restaurant object
             response.response.groups[0].items.forEach(function(venue) {
-                place = venue.venue;
+                let place = venue.venue;
                 restaurants[place.name] = {
                     name: place.name,
                     lat: place.location.lat,
@@ -26,7 +26,7 @@ var model = {
                 };
             });
             // Start up the page elements with the given restaurants
-            view.initElements(restaurants)
+            view.initElements(restaurants);
         });
         return restaurants;
     },
@@ -48,10 +48,10 @@ var model = {
             Object.keys(model.restaurants).forEach(function (key) {
                 if (rests[key].food === restFilter) {
                     filteredRests[key] = rests[key];
-                };
+                }
             });
             return filteredRests;
-        };
+        }
 
     },
 
@@ -89,7 +89,7 @@ var model = {
         /**
         * @description Start building the restaurants objects array
         */
-        model.restaurants = model.buildRestaurants()
+        model.restaurants = model.buildRestaurants();
     },
 
     getTypeSpread: function() {
@@ -103,7 +103,7 @@ var model = {
         });
         return typeList.sort();
     }
-}
+};
 
 var view = {
     filterRests: function(filter) {
@@ -172,7 +172,7 @@ var view = {
         */
         viewMap.setMarkers(restaurants);
     },
-}
+};
 
 var viewMap = {
     deleteAllMarkers: function() {
@@ -252,13 +252,13 @@ var viewMap = {
                         "featureType": "water",
                         "elementType": "labels.text",
                         "stylers": [{"visibility": "off"}]
-                    }
+                    },
                 ],
-            },
+            }
         );
 
         // Have the view start making the restaurants
-        view.initRests()
+        view.initRests();
     },
 
     setMarkers: function(restaurants) {
@@ -306,15 +306,15 @@ var viewMap = {
         // If an infowindow already exists, close it and delete the content
         if (infowindow.marker != marker) {
             if (infowindow.marker) {
-                infowindow.marker.setAnimation(null)
-            };
+                infowindow.marker.setAnimation(null);
+            }
             infowindow.setContent('');
             infowindow.marker = marker;
             infowindow.addListener('closeclick', function() {
                 infowindow.marker = null;
                 viewMap.markers[key].setAnimation(null);
             });
-        };
+        }
 
         // Make the marker bouncy
         marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -324,11 +324,11 @@ var viewMap = {
             '<h3>' + marker.title + '</h3><span class="rating">Food Type: ' +
             marker.type +
             '</span><br><span>Information collected from FOURSQUARE.</span>'
-        )
+        );
 
         infowindow.open(viewMap.map, marker);
     }
-}
+};
 
 var viewList = {
     initViewList: function() {
@@ -364,9 +364,9 @@ var viewList = {
             const restFood = allRestaurants[key].food;
 
             // If the food type is already a button, don't add it to buttons
-            if (self.buttonsList().includes(restFood) != true) {
+            if (self.buttonsList().includes(restFood) !== true) {
                 self.buttonsList.push(allRestaurants[key].food);
-            };
+            }
         });
 
         closeInfo = function() {
@@ -391,7 +391,7 @@ var viewList = {
 
             // Set the ko array to the filtered keys
             self.restaurants(filteredRestsKeys);
-        }
+        };
 
         showInfo = function(key) {
             /**
@@ -428,7 +428,7 @@ var viewList = {
         // If infoStatus is True then close the info
         if (self.infoStatus()) {
             closeInfo();
-        };
+        }
     },
 
     showInfo: function (key) {
@@ -453,6 +453,6 @@ var viewList = {
         // Also show the info window
         viewMap.populateInfoWindow(key);
     },
-}
+};
 
-view.initApp()
+view.initApp();
