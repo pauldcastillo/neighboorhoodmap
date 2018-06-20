@@ -8,6 +8,8 @@ Show restaurants around downtown San Mateo using FourSquare API.
 
 **If running locally:**
 * Download files/ Clone repository.
+* Create an account at https://console.developers.google.com and get a maps api key.
+* Replace the value for `key` in line 197 of `script.js`.
 * Open index.html
 
 **If accessing remotely:**
