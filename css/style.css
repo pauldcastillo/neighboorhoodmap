@@ -22,11 +22,6 @@ h1 {
     color: white;
 }
 
-#map {
-    height: 90%;
-    padding-bottom: 350px;
-}
-
 .button {
     min-width: 48px;
     min-height: 48px;
@@ -35,10 +30,14 @@ h1 {
     border-color: black;
 }
 
+.gmap {
+    height: 100%;
+    padding-bottom: 350px;
+}
+
 .item-container {
     background-color: gray;
-    position: absolute;
-    margin-top: -200px;
+    margin-top: -220px;
     height: 32%;
     max-width: 600px;
 }
@@ -72,7 +71,7 @@ h1 {
 
 .menu {
     background-color: lightgray;
-    height: 90%;
+    height: 100%;
     overflow-y: scroll;
 }
 

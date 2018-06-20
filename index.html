@@ -10,17 +10,12 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <header>
-        <div class="row">
-            <h1 class="title">Restaurants in San Mateo</h1>
-        </div>
-    </header>
-    <div class="col-md-1 col-xs-3 menu" data-bind="visible: (! menuStatus())">
+    <div class="col-md-1 col-sm-5 col-xs-3 menu" data-bind="visible: (! menuStatus())">
         <div class="row">
             <span class="col-xs-12 menu-plus menu-toggle" data-bind="click: toggleMenu">+</span>
         </div>
     </div>
-    <div class="col-md-3 col-xs-8 menu" data-bind="visible: menuStatus">
+    <div class="col-md-3 col-xs-8 col-sm-5 menu" data-bind="visible: menuStatus">
         <div class="row">
             <span class="col-xs-12 menu-x menu-toggle" data-bind="click: toggleMenu">X</span>
         </div>
@@ -34,7 +29,7 @@
             <h4 class="list-rest button" data-bind="text: $data, click: showInfo"></h4>
         </div>
     </div>
-    <div class="row" id="map"></div>
+    <div class="row gmap" id="map"></div>
     <div class="row" data-bind="visible: infoStatus">
         <div class="col-xs-12 col-md-8 item-container">
             <div class="row">

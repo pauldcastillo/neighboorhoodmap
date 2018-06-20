@@ -73,14 +73,6 @@ var model = {
                 radius: 3000,
             },
             timeout: 3000,
-            fail: function (error) {
-                console.log("Error getting restaurants");
-                console.log(error.responseJSON);
-                window.alert(
-                    'An error occurred getting the restaurants. Please ' +
-                    'refresh the page and try again.'
-                );
-            },
             error: function (error) {
                 console.log('Error getting restaurants');
                 console.log(error.responseJSON);
@@ -208,14 +200,6 @@ var viewMap = {
             dataType: 'jsonp',
             timeout: 3000,
             // If the call fails, show an error asking to refresh the page
-            fail: (function (error) {
-                console.log('Error getting map');
-                console.log(error);
-                window.alert(
-                    'An error occurred while initializing the map. Please ' +
-                    'refresh the page and try again.'
-                );
-            }),
             error: (function (error) {
                 console.log('Error getting map');
                 console.log(error);
@@ -244,6 +228,7 @@ var viewMap = {
             center: default_lat_long,
             zoom: 16,
             mapTypeControl: false,
+            gestureHandling: 'greedy',
         });
 
         // Set the map visuals
